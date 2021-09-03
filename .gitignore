@@ -3,3 +3,16 @@
 ################################################################################
 
 /Usabit.Framework.Data/bin/Release
+/.vs/Usabit.Framework/v16
+/Usabit.Framework.Data/lib
+/Usabit.Framework.Data/obj
+/Usabit.Framework.Filter/bin
+/Usabit.Framework.Filter/obj
+/Usabit.Framework.Message/bin/Release
+/Usabit.Framework.Message/lib
+/Usabit.Framework.Message/obj
+/Usabit.Framework.Seedworks/bin/Release
+/Usabit.Framework.Seedworks/lib
+/Usabit.Framework.Seedworks/obj
+/Usabit.Framework.AWS/obj
+/Usabit.Framework.AWS/bin/Debug/netstandard2.1
