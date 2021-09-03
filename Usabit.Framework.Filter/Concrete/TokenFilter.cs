@@ -4,7 +4,7 @@ using Usabit.Framework.Message.Concrete;
 
 namespace Usabit.Framework.Filter.Concrete
 {
-    public class ApplicationRequestFilter : IActionFilter
+    public class TokenFilter : IActionFilter
     {
         public void OnActionExecuted(ActionExecutedContext context)
         {

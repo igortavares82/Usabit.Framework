@@ -2,6 +2,11 @@
 
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
+    <Authors>Backend Team</Authors>
+    <Company>Usabit</Company>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <Description>Framework to manage filtering requests.</Description>
+    <PackageReleaseNotes>WebApi, Request, Filter</PackageReleaseNotes>
   </PropertyGroup>
 
   <ItemGroup>

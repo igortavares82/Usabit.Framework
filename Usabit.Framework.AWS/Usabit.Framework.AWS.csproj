@@ -2,6 +2,15 @@
 
   <PropertyGroup>
     <TargetFramework>netstandard2.1</TargetFramework>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <Authors>Backend Team</Authors>
+    <Company>Usabit</Company>
+    <Description>Framework to easily use AWS SDKs.</Description>
+    <PackageReleaseNotes>AWS, S3</PackageReleaseNotes>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <OutputPath>lib\</OutputPath>
   </PropertyGroup>
 
   <ItemGroup>
