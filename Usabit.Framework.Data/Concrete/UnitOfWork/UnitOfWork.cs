@@ -1,6 +1,5 @@
 ﻿using MediatR;
 using Microsoft.EntityFrameworkCore;
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -15,7 +14,7 @@ namespace Usabit.Framework.Data.Concrete.UnitOfWork
         private DbContext DbContext { get; }
         private IMediator Mediator { get; }
 
-        public UnitOfWork(DbContext dbContext) 
+        public UnitOfWork(DbContext dbContext)
         {
             DbContext = dbContext;
         }
@@ -47,25 +46,7 @@ namespace Usabit.Framework.Data.Concrete.UnitOfWork
                 await DispatchNotioficationsAsync();
         }
 
-        public async Task BulkInsertAsync(IEnumerable<object> entities) 
-        {
-            if (entities == null || entities.Count() == 0)
-                return;
-
-            Type type = entities.First().GetType(); 
-            await DbContext.BulkInsertAsync(type, entities);
-        }
-
-        public async Task BulkUpdateAsync(IEnumerable<object> entities)
-        {
-            if (entities == null || entities.Count() == 0)
-                return;
-
-            Type type = entities.First().GetType();
-            await DbContext.BulkUpdateAsync(type, entities);
-        }
-
-        private async Task DispatchNotioficationsAsync() 
+        private async Task DispatchNotioficationsAsync()
         {
             if (Mediator != null)
             {
@@ -75,7 +56,7 @@ namespace Usabit.Framework.Data.Concrete.UnitOfWork
         }
 
 
-        private async Task<List<INotification>> GetNotificationsAsync() 
+        private async Task<List<INotification>> GetNotificationsAsync()
         {
             return DbContext.ChangeTracker
                             .Entries()
@@ -87,15 +68,15 @@ namespace Usabit.Framework.Data.Concrete.UnitOfWork
 
         }
 
-        public async Task CleanEntriesAsync() => this.DbContext.ChangeTracker?.Clear();
+        public async Task CleanEntriesAsync() => DbContext.ChangeTracker?.Clear();
 
-        public async Task DetachEntriesAsync() 
+        public async Task DetachEntriesAsync()
         {
             var entries = this.DbContext
                               .ChangeTracker?
                               .Entries();
 
-            
+
             entries.ToList().ForEach(it => DbContext.Entry(it).State = EntityState.Detached);
         }
     }

@@ -9,11 +9,12 @@ using Usabit.Framework.Data.Abstractions.Repositories;
 
 namespace Usabit.Framework.Data.Concrete.Repositories
 {
-    public class Repository : IRepository, IDisposable
+    public class Repository<TEntity> : IRepository<TEntity>, IDisposable where TEntity : class
     {
         private bool _disposed = false;
         protected IHttpContextAccessor _httpContextAccessor;
         protected DbContext _context;
+        protected DbSet<TEntity> _entity;
 
         public Repository() { }
 
@@ -27,64 +28,64 @@ namespace Usabit.Framework.Data.Concrete.Repositories
             _httpContextAccessor = httpContextAccessor;
         }
 
-        public async Task DeleteAsync<TEntity>(TEntity entity) where TEntity : class
+        public async Task DeleteAsync(TEntity entity)
         {
             _context.Remove(entity);
         }
 
-        public async Task DeleteAsync<TEntity>(ICollection<TEntity> entity, bool autoDetectChangesEnabled = true) where TEntity : class
+        public async Task DeleteAsync(ICollection<TEntity> entity, bool autoDetectChangesEnabled = true)
         {
             await CollectionHandlerAsync(entity, it => _context.Entry(it).State = EntityState.Deleted, autoDetectChangesEnabled);
         }
 
-        public async Task<ICollection<TEntity>> GetAsync<TEntity>(Expression<Func<TEntity, bool>> predicate, params Expression<Func<TEntity, object>>[] includes) where TEntity : class
+        public async Task<ICollection<TEntity>> GetAsync(Expression<Func<TEntity, bool>> predicate, params Expression<Func<TEntity, object>>[] includes)
         {
-            IQueryable<TEntity> query = _context.Set<TEntity>().AsQueryable();
+            IQueryable<TEntity> query = _entity.AsQueryable();
             includes?.ToList().ForEach(it => query = query.Include(it));
 
             return await query.Where(predicate).ToListAsync();
         }
 
-        public async Task<ICollection<TEntity>> GetAsync<TEntity>(Expression<Func<TEntity, bool>> predicate, params string[] includes) where TEntity : class
+        public async Task<ICollection<TEntity>> GetAsync(Expression<Func<TEntity, bool>> predicate, params string[] includes)
         {
-            IQueryable<TEntity> query = _context.Set<TEntity>().AsQueryable();
+            IQueryable<TEntity> query = _entity.AsQueryable();
             includes?.ToList().ForEach(it => query = query.Include(it));
 
             return await query.Where(predicate).ToListAsync();
         }
 
-        public async Task<TEntity> GetFirstAsync<TEntity>(Expression<Func<TEntity, bool>> predicate, params Expression<Func<TEntity, object>>[] includes) where TEntity : class
+        public async Task<TEntity> GetFirstAsync(Expression<Func<TEntity, bool>> predicate, params Expression<Func<TEntity, object>>[] includes)
         {
-            IQueryable<TEntity> query = _context.Set<TEntity>().AsQueryable();
+            IQueryable<TEntity> query = _entity.AsQueryable();
             includes?.ToList().ForEach(it => query = query.Include(it));
 
             return await query.FirstOrDefaultAsync(predicate);
         }
 
-        public async Task<TEntity> GetFirstAsync<TEntity>(Expression<Func<TEntity, bool>> predicate, params string[] includes) where TEntity : class
+        public async Task<TEntity> GetFirstAsync(Expression<Func<TEntity, bool>> predicate, params string[] includes)
         {
-            IQueryable<TEntity> query = _context.Set<TEntity>().AsQueryable();
+            IQueryable<TEntity> query = _entity.AsQueryable();
             includes?.ToList().ForEach(it => query = query.Include(it));
 
             return await query.FirstOrDefaultAsync(predicate);
         }
 
-        public async Task InsertAsync<TEntity>(TEntity entity) where TEntity : class
+        public async Task InsertAsync(TEntity entity)
         {
             await _context.AddAsync(entity);
         }
 
-        public async Task InsertAsync<TEntity>(ICollection<TEntity> entity, bool autoDetectChangesEnabled = true) where TEntity : class
+        public async Task InsertAsync(ICollection<TEntity> entity, bool autoDetectChangesEnabled = true)
         {
             await CollectionHandlerAsync(entity, it => _context.Add(it), autoDetectChangesEnabled);
         }
 
-        public async Task UpdateAsync<TEntity>(TEntity entity) where TEntity : class
+        public async Task UpdateAsync(TEntity entity)
         {
             _context.Update(entity);
         }
 
-        public async Task UpdateAsync<TEntity>(ICollection<TEntity> entity, bool autoDetectChangesEnabled = true) where TEntity : class
+        public async Task UpdateAsync(ICollection<TEntity> entity, bool autoDetectChangesEnabled = true)
         {
             await CollectionHandlerAsync(entity, it => _context.Entry(it).State = EntityState.Modified, autoDetectChangesEnabled);
         }

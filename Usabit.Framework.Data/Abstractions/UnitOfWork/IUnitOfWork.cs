@@ -9,8 +9,6 @@ namespace Usabit.Framework.Data.Abstractions.UnitOfWork
         void Commit();
         Task CommitAsync();
         Task CommitAsync(EventDispatchMode? dispatchMode = EventDispatchMode.None);
-        Task BulkInsertAsync(IEnumerable<object> entities);
-        Task BulkUpdateAsync(IEnumerable<object> entities);
         Task DetachEntriesAsync();
         Task CleanEntriesAsync();
     }
